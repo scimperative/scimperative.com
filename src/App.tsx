@@ -1,9 +1,9 @@
 ﻿import { useState, useEffect } from 'react';
 import { getAllModules, getModuleById } from './sandbox/core/registry';
 import { ModuleShell } from './sandbox/core/ModuleShell';
-import { HomePage } from './sandbox/core/HomePage';
-import { AboutPage } from './sandbox/core/AboutPage';
-import { WorkshopPage } from './sandbox/core/WorkshopPage';
+import { HomePage } from './pages/HomePage';
+import { AboutPage } from './pages/AboutPage';
+import { WorkshopPage } from './pages/WorkshopPage';
 import { BUILD_INFO } from './sandbox/core/buildInfo';
 
 type View = 'home' | 'sandbox' | 'about' | 'workshop';
