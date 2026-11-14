@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
-import { getAllModules, getModuleById } from './core/registry';
-import { ModuleShell } from './core/ModuleShell';
-import { HomePage } from './core/HomePage';
-import { AboutPage } from './core/AboutPage';
-import { WorkshopPage } from './core/WorkshopPage';
-import { BUILD_INFO } from './core/buildInfo';
+﻿import { useState, useEffect } from 'react';
+import { getAllModules, getModuleById } from './sandbox/core/registry';
+import { ModuleShell } from './sandbox/core/ModuleShell';
+import { HomePage } from './pages/HomePage';
+import { AboutPage } from './pages/AboutPage';
+import { WorkshopPage } from './pages/WorkshopPage';
+import { BUILD_INFO } from './sandbox/core/buildInfo';
 
 type View = 'home' | 'sandbox' | 'about' | 'workshop';
 
@@ -12,9 +12,9 @@ const VIEWS: View[] = ['sandbox', 'about', 'workshop'];
 
 const PAGE_TITLES: Record<View, string> = {
   home: 'Silicon Carbide Imperative',
-  sandbox: 'Sandbox · Silicon Carbide Imperative',
-  about: 'About · Silicon Carbide Imperative',
-  workshop: 'Workshop · Silicon Carbide Imperative',
+  sandbox: 'Sandbox Â· Silicon Carbide Imperative',
+  about: 'About Â· Silicon Carbide Imperative',
+  workshop: 'Workshop Â· Silicon Carbide Imperative',
 };
 
 export function App() {
@@ -89,7 +89,7 @@ export function App() {
               marginLeft: '-0.5rem',
             }}
           >
-            ← Sandbox
+            â† Sandbox
           </button>
           <span
             style={{

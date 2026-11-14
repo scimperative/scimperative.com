@@ -1,0 +1,6 @@
+[submodule "src/sandbox"]
+	path = src/sandbox
+	url = https://github.com/scimperative/sandbox.git
+[submodule "workshop"]
+	path = workshop
+	url = https://github.com/scimperative/workshop.git

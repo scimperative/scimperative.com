@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import type { Module } from './types';
+﻿import React, { useState } from 'react';
+import type { Module } from '../sandbox/core/types';
 
 interface HomePageProps {
   modules: Module[];
@@ -40,7 +40,7 @@ export const HomePage: React.FC<HomePageProps> = ({ modules, view, onSelectModul
               padding: '0 0 1rem',
             }}
           >
-            ← Home
+            â† Home
           </button>
           <h1 style={{ marginBottom: '0.5rem' }}>Sandbox</h1>
           <p style={{ color: 'var(--text)', lineHeight: 1.6 }}>
@@ -108,7 +108,7 @@ export const HomePage: React.FC<HomePageProps> = ({ modules, view, onSelectModul
         </header>
       )}
 
-      {/* ─── Modules ─── */}
+      {/* â”€â”€â”€ Modules â”€â”€â”€ */}
       <section style={{ display: isSandbox ? undefined : 'none' }}>
         <div
           style={{
@@ -223,7 +223,7 @@ export const HomePage: React.FC<HomePageProps> = ({ modules, view, onSelectModul
                       transform: isHovered ? 'scale(1.03)' : 'none',
                     }}
                   >
-                    Launch →
+                    Launch â†’
                   </button>
                 </div>
 
