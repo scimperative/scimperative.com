@@ -40,7 +40,7 @@ export const HomePage: React.FC<HomePageProps> = ({ modules, view, onSelectModul
               padding: '0 0 1rem',
             }}
           >
-            â† Home
+            ← Home
           </button>
           <h1 style={{ marginBottom: '0.5rem' }}>Sandbox</h1>
           <p style={{ color: 'var(--text)', lineHeight: 1.6 }}>

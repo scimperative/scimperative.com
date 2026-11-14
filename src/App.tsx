@@ -89,7 +89,7 @@ export function App() {
               marginLeft: '-0.5rem',
             }}
           >
-            â† Sandbox
+            ← Sandbox
           </button>
           <span
             style={{
