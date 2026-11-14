@@ -2,7 +2,7 @@
 
 Source for [scimperative.com](https://scimperative.com): the site shell, about and workshop pages, and deployment.
 
-- **[sandbox](https://github.com/scimperative/sandbox)** is included as a submodule at `src/sandbox`.
+- **[sandbox](https://github.com/scimperative/sandbox)** is included as a submodule at `sandbox`.
 - **[workshop](https://github.com/scimperative/workshop)** is included as a submodule at `workshop`.
 
 ## Develop
