@@ -16,7 +16,7 @@ npm ci
 npm run dev
 ```
 
-Run the integrated model tests and production build from this repository:
+The website's test command uses the runner maintained in the `sandbox` submodule. Run the integrated model tests and production build from this repository:
 
 ```bash
 npm test
