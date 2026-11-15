@@ -17,7 +17,7 @@ The website records an exact commit for each submodule. Pushing a change to a su
 
 ### Publishing submodule changes
 
-Clone the website with both submodules:
+Clone the website with all three submodules:
 
 ```bash
 git clone --recurse-submodules https://github.com/scimperative/scimperative.com.git
