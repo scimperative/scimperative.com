@@ -7,11 +7,12 @@ interface HomePageProps {
   onSelectModule: (id: string) => void;
   onShowSandbox: () => void;
   onShowWorkshop: () => void;
+  onShowLibrary: () => void;
   onShowAbout: () => void;
   onGoHome: () => void;
 }
 
-export const HomePage: React.FC<HomePageProps> = ({ modules, view, onSelectModule, onShowSandbox, onShowWorkshop, onShowAbout, onGoHome }) => {
+export const HomePage: React.FC<HomePageProps> = ({ modules, view, onSelectModule, onShowSandbox, onShowWorkshop, onShowLibrary, onShowAbout, onGoHome }) => {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const isSandbox = view === 'sandbox';
 
@@ -82,14 +83,9 @@ export const HomePage: React.FC<HomePageProps> = ({ modules, view, onSelectModul
             <button onClick={onShowWorkshop} className="home-cta home-cta--outlined">
               Workshop
             </button>
-            <a
-              href="https://scimperative.substack.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="home-cta home-cta--outlined"
-            >
+            <button onClick={onShowLibrary} className="home-cta home-cta--outlined">
               Library
-            </a>
+            </button>
           </div>
           <nav aria-label="External links" className="home-front-door__links">
             {[

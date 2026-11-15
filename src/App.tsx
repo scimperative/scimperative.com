@@ -4,17 +4,19 @@ import { ModuleShell } from '../sandbox/core/ModuleShell';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
 import { WorkshopPage } from './pages/WorkshopPage';
+import { LibraryPage } from './pages/LibraryPage';
 import { BUILD_INFO } from '../sandbox/core/buildInfo';
 
-type View = 'home' | 'sandbox' | 'about' | 'workshop';
+type View = 'home' | 'sandbox' | 'about' | 'workshop' | 'library';
 
-const VIEWS: View[] = ['sandbox', 'about', 'workshop'];
+const VIEWS: View[] = ['sandbox', 'about', 'workshop', 'library'];
 
 const PAGE_TITLES: Record<View, string> = {
   home: 'Silicon Carbide Imperative',
   sandbox: 'Sandbox · Silicon Carbide Imperative',
   about: 'About · Silicon Carbide Imperative',
   workshop: 'Workshop · Silicon Carbide Imperative',
+  library: 'Library · Silicon Carbide Imperative',
 };
 
 export function App() {
@@ -113,6 +115,7 @@ export function App() {
     return (
       <AboutPage
         onGoHome={() => navigate({ view: 'home' })}
+        onShowLibrary={() => navigate({ view: 'library' })}
       />
     );
   }
@@ -126,6 +129,10 @@ export function App() {
     );
   }
 
+  if (route.view === 'library') {
+    return <LibraryPage onGoHome={() => navigate({ view: 'home' })} />;
+  }
+
   return (
     <HomePage
       modules={modules}
@@ -133,6 +140,7 @@ export function App() {
       onSelectModule={(id) => navigate({ moduleId: id })}
       onShowSandbox={() => navigate({ view: 'sandbox' })}
       onShowWorkshop={() => navigate({ view: 'workshop' })}
+      onShowLibrary={() => navigate({ view: 'library' })}
       onShowAbout={() => navigate({ view: 'about' })}
       onGoHome={() => navigate({ view: 'home' })}
     />

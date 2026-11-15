@@ -4,3 +4,6 @@
 [submodule "workshop"]
 	path = workshop
 	url = https://github.com/scimperative/workshop.git
+[submodule "library"]
+	path = library
+	url = https://github.com/scimperative/library.git

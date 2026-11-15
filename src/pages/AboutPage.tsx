@@ -1,8 +1,9 @@
 interface AboutPageProps {
   onGoHome: () => void;
+  onShowLibrary: () => void;
 }
 
-const ABOUT_PAGE_CONTENT = (
+const ABOUT_PAGE_CONTENT = (onShowLibrary: () => void) => (
   <>
     <p>
       Silicon (<em>Si</em>), the foundation of every digital machine, and carbon (<em>C</em>), the foundation of every biological being, abstractly represent the divide between digital intelligence and biological intelligence.
@@ -17,7 +18,7 @@ const ABOUT_PAGE_CONTENT = (
       <em>Silicon Carbide Imperative</em> (SC Imperative) is an educational initiative that explores these interfaces from first principles, building intuition by identifying binding constraints: what currently limits a system and what changes once it is addressed.
     </p>
     <p>
-      It has three parts: the <strong>Sandbox</strong>, the <strong>Workshop</strong>, and the <strong>Library</strong>. The {' '}<a href="https://scimperative.com/?view=sandbox" target="_blank" rel="noopener noreferrer"> Sandbox </a>{' '} is a set of open-source browser tools that make system limits visible and interactive; the {' '}<a href="https://scimperative.com/?view=workshop" target="_blank" rel="noopener noreferrer"> Workshop </a>{' '} is a hardware testbed that publishes physical measurements from real devices; and the {' '}<a href="https://scimperative.substack.com/" target="_blank" rel="noopener noreferrer"> Library </a>{' '} is written research that may utilise the other two components, with the working shown so it can be verified, contested, or extended.
+      It has three parts: the <strong>Sandbox</strong>, the <strong>Workshop</strong>, and the <strong>Library</strong>. The {' '}<a href="https://scimperative.com/?view=sandbox" target="_blank" rel="noopener noreferrer"> Sandbox </a>{' '} is a set of open-source browser tools that make system limits visible and interactive; the {' '}<a href="https://scimperative.com/?view=workshop" target="_blank" rel="noopener noreferrer"> Workshop </a>{' '} is a hardware testbed that publishes physical measurements from real devices; and the {' '}<a href="?view=library" onClick={(event) => { event.preventDefault(); onShowLibrary(); }}> Library </a>{' '} is written research that may utilise the other two components, with the working shown so it can be verified, contested, or extended.
     </p>
     <p>
       The work is driven by my curiosity across fields such as artificial intelligence (AI), space, defence, semiconductors, macroeconomics, supply chains, geopolitics, and critical infrastructure.
@@ -37,7 +38,7 @@ const ABOUT_PAGE_CONTENT = (
   </>
 );
 
-export function AboutPage({ onGoHome }: AboutPageProps) {
+export function AboutPage({ onGoHome, onShowLibrary }: AboutPageProps) {
   return (
     <div
       style={{
@@ -87,7 +88,7 @@ export function AboutPage({ onGoHome }: AboutPageProps) {
           </h1>
         </header>
         <main className="about-page__content">
-          {ABOUT_PAGE_CONTENT}
+          {ABOUT_PAGE_CONTENT(onShowLibrary)}
         </main>
       </div>
     </div>
