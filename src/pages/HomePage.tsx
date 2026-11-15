@@ -108,7 +108,7 @@ export const HomePage: React.FC<HomePageProps> = ({ modules, view, onSelectModul
         </header>
       )}
 
-      {/* â”€â”€â”€ Modules â”€â”€â”€ */}
+      {/* Modules */}
       <section style={{ display: isSandbox ? undefined : 'none' }}>
         <div
           style={{
@@ -223,7 +223,7 @@ export const HomePage: React.FC<HomePageProps> = ({ modules, view, onSelectModul
                       transform: isHovered ? 'scale(1.03)' : 'none',
                     }}
                   >
-                    Launch â†’
+                    Launch →
                   </button>
                 </div>
 

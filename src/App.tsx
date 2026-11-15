@@ -12,9 +12,9 @@ const VIEWS: View[] = ['sandbox', 'about', 'workshop'];
 
 const PAGE_TITLES: Record<View, string> = {
   home: 'Silicon Carbide Imperative',
-  sandbox: 'Sandbox Â· Silicon Carbide Imperative',
-  about: 'About Â· Silicon Carbide Imperative',
-  workshop: 'Workshop Â· Silicon Carbide Imperative',
+  sandbox: 'Sandbox · Silicon Carbide Imperative',
+  about: 'About · Silicon Carbide Imperative',
+  workshop: 'Workshop · Silicon Carbide Imperative',
 };
 
 export function App() {
