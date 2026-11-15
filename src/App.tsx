@@ -1,10 +1,10 @@
 ﻿import { useState, useEffect } from 'react';
-import { getAllModules, getModuleById } from './sandbox/core/registry';
-import { ModuleShell } from './sandbox/core/ModuleShell';
+import { getAllModules, getModuleById } from '../sandbox/core/registry';
+import { ModuleShell } from '../sandbox/core/ModuleShell';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
 import { WorkshopPage } from './pages/WorkshopPage';
-import { BUILD_INFO } from './sandbox/core/buildInfo';
+import { BUILD_INFO } from '../sandbox/core/buildInfo';
 
 type View = 'home' | 'sandbox' | 'about' | 'workshop';
 

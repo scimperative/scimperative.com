@@ -1,1 +1,1 @@
-import '../src/sandbox/scripts/run-all-tests.ts';
+import '../sandbox/scripts/run-all-tests.ts';

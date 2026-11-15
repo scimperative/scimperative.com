@@ -1,7 +1,7 @@
 ﻿import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { execFileSync } from 'node:child_process';
-import { verifyRunRecord, type OrbitalThermalRunRecord } from '../src/sandbox/modules/orbital-thermal-limits/runRecord';
+import { verifyRunRecord, type OrbitalThermalRunRecord } from '../sandbox/modules/orbital-thermal-limits/runRecord';
 
 const recordPath = process.argv[2];
 

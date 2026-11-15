@@ -1,5 +1,5 @@
 ﻿import React, { useState } from 'react';
-import type { Module } from '../sandbox/core/types';
+import type { Module } from '../../sandbox/core/types';
 
 interface HomePageProps {
   modules: Module[];
