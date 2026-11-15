@@ -15,7 +15,20 @@ interface WorkshopRun {
 }
 
 // Add runs here as they are published.
-const RUNS: WorkshopRun[] = [];
+const RUNS: WorkshopRun[] = [
+  {
+    id: "01-hailo-expectation-calibration",
+    title: "Workshop 01: Is the Raspberry Pi AI HAT+ (Hailo-8L) good for AI?",
+    date: "2026-11-15",
+    question:
+      "One Raspberry Pi 5 with the AI HAT+ (Hailo-8L, 13 TOPS): how fast is it on CNN vision, what does it do for LLMs, and how far is real throughput from the rated TOPS? Verdict: strong for CNN vision, and no evidence here that it helps with LLMs. Predictions were set after pilot runs on the same rig, so read the hit rate as pilot-informed, not blind. Not tested: a transformer on the HAT (the compiler needs an x86 machine), energy, and PCIe sensitivity. The LLM ran on the Pi CPU alone, with the HAT unused.",
+    prediction: "YOLOv8n 99 FPS end-to-end, limited by the host CPU; Llama-3.2-1B on CPU 11 tok/s",
+    measured:
+      "YOLOv8n 100.6 FPS end-to-end (107.4 model-only, 7.2% of rated TOPS), limited NPU-side (inferred; PCIe untested); Llama-3.2-1B on CPU 14.3 tok/s",
+    gap: "FPS within 2%; bottleneck call wrong (host CPU predicted, NPU-side measured); LLM speed +30%",
+    href: "https://github.com/scimperative/workshop/tree/main/01-hailo-expectation-calibration",
+  },
+];
 
 const RUN_PARTS: [string, string][] = [
   ['Question and prediction', "what the Sandbox model said before the run, committed first so it can't be back-fitted."],
