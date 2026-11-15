@@ -45,7 +45,7 @@ Update only the changed submodule path if only one repository changed. The websi
 
 ## Develop
 
-Use Node.js 22.13.0 or a compatible supported release, and clone with both submodules:
+Use Node.js 22.13.0 or a compatible supported release, and clone with all three submodules:
 
 ```bash
 git clone --recurse-submodules https://github.com/scimperative/scimperative.com.git

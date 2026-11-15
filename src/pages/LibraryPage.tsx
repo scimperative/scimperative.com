@@ -36,15 +36,20 @@ export function LibraryPage({ onGoHome }: LibraryPageProps) {
           Written research from Silicon Carbide Imperative. Each entry links to its original
           publication on Substack.
         </p>
-        <a
-          href="https://scimperative.substack.com/"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="home-cta home-cta--outlined"
-          style={{ marginTop: '0.5rem' }}
-        >
-          Visit Substack
-        </a>
+        <div style={{ marginTop: '2rem' }}>
+          <hr style={{ margin: 0, border: 0, borderTop: '1px solid var(--border)' }} />
+          <div style={{ display: 'flex', justifyContent: 'center', padding: '1.25rem 0' }}>
+            <a
+              href="https://scimperative.substack.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="home-cta home-cta--outlined"
+            >
+              Visit Substack
+            </a>
+          </div>
+          <hr style={{ margin: 0, border: 0, borderTop: '1px solid var(--border)' }} />
+        </div>
       </header>
 
       <section>
@@ -122,9 +127,23 @@ export function LibraryPage({ onGoHome }: LibraryPageProps) {
                 >
                   {entry.date}
                 </time>
-                <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.55 }}>
-                  {entry.summary}
-                </p>
+                {entry.subtitle && (
+                  <p
+                    style={{
+                      margin: '0 0 0.5rem',
+                      color: 'var(--text-muted)',
+                      fontFamily: 'var(--mono)',
+                      fontSize: '0.8rem',
+                    }}
+                  >
+                    {entry.subtitle}
+                  </p>
+                )}
+                {entry.summary && (
+                  <p style={{ margin: 0, fontSize: '0.9rem', lineHeight: 1.55 }}>
+                    {entry.summary}
+                  </p>
+                )}
                 <span
                   style={{
                     display: 'block',
