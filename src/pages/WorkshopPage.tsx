@@ -21,10 +21,10 @@ const RUNS: WorkshopRun[] = [
     title: "Workshop 01: Is the Raspberry Pi AI HAT+ (Hailo-8L) good for AI?",
     date: "2026-11-15",
     question:
-      "One Raspberry Pi 5 with the AI HAT+ (Hailo-8L, 13 TOPS): how fast is it on CNN vision, what does it do for LLMs, and how far is real throughput from the rated TOPS? Verdict: strong for CNN vision, and no evidence here that it helps with LLMs. Predictions were set after pilot runs on the same rig, so read the hit rate as pilot-informed, not blind. Not tested: a transformer on the HAT (the compiler needs an x86 machine), energy, and PCIe sensitivity. The LLM ran on the Pi CPU alone, with the HAT unused.",
+      "One Raspberry Pi 5 with the AI HAT+ (Hailo-8L, 13 TOPS): how fast is it on CNN vision, how does it handle a speech transformer (Whisper-tiny), what does it do for LLMs, and how far is real throughput from rated TOPS? Verdict: strong for CNN vision (~100 FPS), Whisper-tiny runs on the HAT (~0.19 RTF), and LLMs are unsupported on the 8L chip (running on CPU at 14.3 tok/s). Predictions were set after pilot runs on the same rig, so read hit rates as pilot-informed, not blind. Not tested: energy and PCIe sensitivity.",
     prediction: "YOLOv8n 99 FPS end-to-end, limited by the host CPU; Llama-3.2-1B on CPU 11 tok/s",
     measured:
-      "YOLOv8n 100.6 FPS end-to-end (107.4 model-only, 7.2% of rated TOPS), limited NPU-side (inferred; PCIe untested); Llama-3.2-1B on CPU 14.3 tok/s",
+      "YOLOv8n 100.6 FPS end-to-end (107.4 model-only, 7.2% of rated TOPS), Whisper-tiny on HAT (~0.19 RTF on 3 test clips), Llama-3.2-1B on CPU 14.3 tok/s",
     gap: "FPS within 2%; bottleneck call wrong (host CPU predicted, NPU-side measured); LLM speed +30%",
     href: "https://github.com/scimperative/workshop/tree/main/01-hailo-expectation-calibration",
   },
@@ -102,10 +102,6 @@ export function WorkshopPage({ onGoHome, onShowSandbox }: WorkshopPageProps) {
             </li>
           ))}
         </ul>
-        <p style={{ lineHeight: 1.6, margin: 0 }}>
-          Verification rigs: ASUS TUF A14, Jetson, Raspberry Pi. Runs arrive when a measurement is ready, not on a
-          schedule.
-        </p>
       </section>
 
       <section>
