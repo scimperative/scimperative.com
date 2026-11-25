@@ -58,7 +58,7 @@ export function AboutPage({ onGoHome, onShowLibrary }: AboutPageProps) {
         }}
       >
         <a
-          href={window.location.pathname}
+          href={typeof window !== 'undefined' ? window.location.pathname : '/about'}
           className="about-page__back"
           onClick={(event) => {
             event.preventDefault();

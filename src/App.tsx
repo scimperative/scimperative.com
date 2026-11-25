@@ -19,12 +19,48 @@ const PAGE_TITLES: Record<View, string> = {
   library: 'Library · Silicon Carbide Imperative',
 };
 
-export function App() {
+export interface AppProps {
+  initialUrl?: string;
+}
+
+export function App({ initialUrl }: AppProps = {}) {
   const readRoute = () => {
-    const params = new URLSearchParams(window.location.search);
-    const requested = params.get('view') as View | null;
+    let search = '';
+    let pathname = '';
+    if (initialUrl) {
+      try {
+        const u = new URL(initialUrl, 'https://scimperative.com');
+        search = u.search;
+        pathname = u.pathname;
+      } catch {
+        search = '';
+        pathname = '';
+      }
+    } else if (typeof window !== 'undefined') {
+      search = window.location.search;
+      pathname = window.location.pathname;
+    }
+
+    const params = new URLSearchParams(search);
+    let requested = params.get('view') as View | null;
+    let moduleId = params.get('module');
+
+    if (!requested && !moduleId && pathname) {
+      const clean = pathname.replace(/^\/+|\/+$/g, '');
+      const parts = clean.split('/').filter(Boolean);
+      if (parts[0] === 'sandbox') {
+        if (parts[1]) {
+          moduleId = parts[1];
+        } else {
+          requested = 'sandbox';
+        }
+      } else if (VIEWS.includes(parts[0] as View)) {
+        requested = parts[0] as View;
+      }
+    }
+
     return {
-      moduleId: params.get('module'),
+      moduleId,
       view: requested && VIEWS.includes(requested) ? requested : ('home' as View),
     };
   };
@@ -40,17 +76,25 @@ export function App() {
   }, []);
 
   useEffect(() => {
-    document.title = currentModule
-      ? currentModule.manifest.title
-      : PAGE_TITLES[route.view];
+    if (typeof document !== 'undefined') {
+      document.title = currentModule
+        ? currentModule.manifest.title
+        : PAGE_TITLES[route.view];
+    }
   }, [currentModule, route.view]);
 
   const navigate = (nextRoute: { moduleId?: string; view?: View }) => {
+    if (typeof window === 'undefined') return;
     const url = new URL(window.location.href);
     url.search = '';
-    if (nextRoute.moduleId) url.searchParams.set('module', nextRoute.moduleId);
-    if (nextRoute.view && nextRoute.view !== 'home') {
+    if (nextRoute.moduleId) {
+      url.pathname = `/sandbox/${nextRoute.moduleId}/`;
+      url.searchParams.set('module', nextRoute.moduleId);
+    } else if (nextRoute.view && nextRoute.view !== 'home') {
+      url.pathname = `/${nextRoute.view}/`;
       url.searchParams.set('view', nextRoute.view);
+    } else {
+      url.pathname = '/';
     }
     window.history.pushState({}, '', url.toString());
     setRoute({ moduleId: nextRoute.moduleId ?? null, view: nextRoute.view ?? 'home' });

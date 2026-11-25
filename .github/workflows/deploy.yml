@@ -41,6 +41,8 @@ jobs:
         run: npm test
       - name: Build
         run: npm run build
+      - name: Verify Prerender
+        run: npm run test:prerender
       - name: Upload Pages artifact
         if: github.event_name != 'pull_request'
         uses: actions/upload-pages-artifact@v5

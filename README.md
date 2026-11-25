@@ -60,3 +60,50 @@ The website's test command uses the runner maintained in the `sandbox` submodule
 npm test
 npm run build
 ```
+
+## Build & SSG Pre-rendering
+
+`npm run build` does three things in sequence:
+
+1. **TypeScript check:** `tsc -b`
+2. **Vite client build:** Bundles the React application into `dist/`.
+3. **SSG pre-rendering:** `tsx scripts/prerender.ts` — renders each route to static HTML using `react-dom/server` and Vite's SSR module loader, then writes the result into the matching `dist/` directory.
+
+After a successful build, `dist/` contains a complete static site:
+
+```
+dist/
+  index.html                              ← Home (pre-rendered)
+  404.html                                ← SPA fallback for GitHub Pages
+  llms.txt                                ← Agent & AI-crawler index
+  sandbox/
+    index.html                            ← Sandbox catalogue
+    orbital-thermal-limits/index.html
+    solar-power-budget/index.html
+    llm-bitflip-resilience/index.html
+  workshop/index.html
+  library/index.html
+  about/index.html
+  assets/                                 ← Hashed JS/CSS/font bundles
+```
+
+Every `index.html` has a fully pre-rendered `<div id="root">` with semantic page content, correct `<title>`, `<meta name="description">`, OpenGraph tags, and a canonical `<link>`. The React application hydrates the pre-rendered markup in the browser via `hydrateRoot`.
+
+New sandbox modules added to `sandbox/core/registry` are automatically picked up by the pre-renderer with no manual changes required.
+
+### Verifying the pre-render output
+
+```bash
+npm run build           # builds and pre-renders
+npm run test:prerender  # asserts all static pages exist and contain content
+```
+
+The pre-render verification runs automatically in CI after every build (see `.github/workflows/deploy.yml`).
+
+### `llms.txt`
+
+`dist/llms.txt` is generated at build time and served at `https://scimperative.com/llms.txt`. It follows the [llms.txt standard](https://llmstxt.org/) and provides autonomous AI agents with a Markdown index of all Sandbox modules, Workshop runs, and Library dossiers — without requiring JavaScript execution.
+
+### Why no path rewrites are needed
+
+GitHub Pages serves a directory's `index.html` for clean path URLs (`/sandbox/orbital-thermal-limits/` → `dist/sandbox/orbital-thermal-limits/index.html`) natively. The `dist/404.html` copy of the root shell handles any path that doesn't match a pre-rendered file, allowing client-side routing to take over.

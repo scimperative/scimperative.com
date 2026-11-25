@@ -13,8 +13,9 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build && node scripts/generate-meta.js && node scripts/copy-404.js",
+    "build": "tsc -b && vite build && tsx scripts/prerender.ts",
     "test": "tsx scripts/run-all-tests.ts",
+    "test:prerender": "tsx scripts/test-prerender.ts",
     "test:thermal": "tsx sandbox/modules/orbital-thermal-limits/model.test.ts",
     "test:solar": "tsx sandbox/modules/solar-power-budget/model.test.ts",
     "replay": "tsx scripts/replay-run.ts",
