@@ -67,18 +67,7 @@ export function WorkshopPage({ onGoHome, onShowSandbox }: WorkshopPageProps) {
         </button>
         <h1 style={{ marginBottom: '0.5rem' }}>Workshop</h1>
         <p style={{ color: 'var(--text)', lineHeight: 1.6 }}>
-          Our hardware testbed. Each run is one physical measurement of one question, set against the{' '}
-          <a
-            href="/sandbox/"
-            onClick={(event) => {
-              event.preventDefault();
-              onShowSandbox();
-            }}
-            style={{ color: 'var(--link)' }}
-          >
-            Sandbox
-          </a>{' '}
-          model's prediction, so the gap between model and reality is visible and checkable.
+          Test it. Hands-on measurements that put real hardware against what the model expects.
         </p>
       </header>
 

@@ -45,7 +45,7 @@ export const HomePage: React.FC<HomePageProps> = ({ modules, view, onSelectModul
           </button>
           <h1 style={{ marginBottom: '0.5rem' }}>Sandbox</h1>
           <p style={{ color: 'var(--text)', lineHeight: 1.6 }}>
-            Interactive calculators for testing fundamental engineering and physics constraints.
+            Model it. Interactive calculators for testing physical constraints and what-if assumptions.
           </p>
         </header>
       ) : (

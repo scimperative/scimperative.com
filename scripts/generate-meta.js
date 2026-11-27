@@ -3,7 +3,7 @@ import path from 'path';
 
 // 1. Define your static views
 const staticViews = [
-  { view: 'sandbox', title: 'Sandbox | Silicon Carbide Imperative', desc: 'Interactive calculators for testing fundamental engineering and physics constraints.' },
+  { view: 'sandbox', title: 'Sandbox | Silicon Carbide Imperative', desc: 'Model it. Interactive calculators for testing physical constraints and what-if assumptions.' },
   { view: 'workshop', title: 'Workshop | Silicon Carbide Imperative', desc: 'Hardware measurements compared against first-principles predictions.' },
   { view: 'about', title: 'About | Silicon Carbide Imperative', desc: 'Learn about Silicon Carbide Imperative, an independent publication exploring high-friction technical interfaces from first principles.' }
 ];

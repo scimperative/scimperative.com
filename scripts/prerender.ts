@@ -44,7 +44,7 @@ async function prerender() {
         url: '/sandbox/',
         outputPath: path.resolve(distDir, 'sandbox', 'index.html'),
         title: 'Sandbox · Silicon Carbide Imperative',
-        description: 'Interactive calculators for testing fundamental engineering and physics constraints.',
+        description: 'Model it. Interactive calculators for testing physical constraints and what-if assumptions.',
       },
       {
         url: '/workshop/',

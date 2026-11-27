@@ -33,8 +33,7 @@ export function LibraryPage({ onGoHome }: LibraryPageProps) {
         </button>
         <h1 style={{ marginBottom: '0.5rem' }}>Library</h1>
         <p style={{ color: 'var(--text)', lineHeight: 1.6 }}>
-          Written research from Silicon Carbide Imperative. Each entry links to its original
-          publication on Substack.
+          Explain it. Written analysis unpacking the physics, trade-offs, and practical takeaways behind a question.
         </p>
         <div style={{ marginTop: '2rem' }}>
           <hr style={{ margin: 0, border: 0, borderTop: '1px solid var(--border)' }} />
