@@ -8,6 +8,7 @@ import { SearchModal } from './components/SearchModal';
 import { Breadcrumbs, type BreadcrumbItem } from './components/Breadcrumbs';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
+import { HelpPage } from './pages/HelpPage';
 import { ThreadsPage } from './pages/ThreadsPage';
 import { ThreadHubPage } from './pages/ThreadHubPage';
 import { PillarIndexPage } from './pages/PillarIndexPage';
@@ -102,7 +103,8 @@ export function App({ initialUrl }: AppProps = {}) {
     section === 'sandbox' ||
     section === 'workshop' ||
     section === 'library' ||
-    section === 'about'
+    section === 'about' ||
+    section === 'help'
       ? section
       : 'home';
 
@@ -237,6 +239,10 @@ export function App({ initialUrl }: AppProps = {}) {
     pageTitle = 'About · Silicon Carbide Imperative';
     breadcrumbs = [{ label: 'Home', path: '/' }, { label: 'About' }];
     content = <AboutPage onNavigate={navigate} />;
+  } else if (section === 'help') {
+    pageTitle = 'Help · Silicon Carbide Imperative';
+    breadcrumbs = [{ label: 'Home', path: '/' }, { label: 'Help' }];
+    content = <HelpPage onNavigate={navigate} />;
   }
 
   if (!content) {

@@ -75,6 +75,12 @@ async function prerender() {
         title: 'About · Silicon Carbide Imperative',
         description: 'Learn about Silicon Carbide Imperative, an independent publication exploring high-friction technical interfaces from first principles.',
       },
+      {
+        url: '/help/',
+        outputPath: path.resolve(distDir, 'help', 'index.html'),
+        title: 'Help · Silicon Carbide Imperative',
+        description: 'How Silicon Carbide Imperative is organised, what the entity IDs mean, and how to navigate the site.',
+      },
     ];
 
     // Add Thread hub routes

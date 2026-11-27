@@ -411,7 +411,14 @@ input[type="range"]::-moz-range-thumb {
   color: var(--text-h);
 }
 
-.site-header__search {
+.site-header__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.site-header__search,
+.site-header__help {
   display: inline-flex;
   align-items: center;
   gap: 0.45rem;
@@ -423,9 +430,12 @@ input[type="range"]::-moz-range-thumb {
   font-size: 0.8rem;
   font-family: var(--mono);
   cursor: pointer;
+  text-decoration: none;
 }
 
-.site-header__search:hover {
+.site-header__search:hover,
+.site-header__help:hover,
+.site-header__help.is-active {
   border-color: var(--accent);
   color: var(--text-h);
 }
@@ -522,6 +532,19 @@ input[type="range"]::-moz-range-thumb {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1.25rem;
+}
+
+.thread-pillar-group {
+  margin-bottom: 2rem;
+}
+
+.thread-pillar-group__title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0 0 0.85rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
 }
 
 .pillars-grid {

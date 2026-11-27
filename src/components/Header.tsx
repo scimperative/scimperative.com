@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type NavSection = 'home' | 'threads' | 'sandbox' | 'workshop' | 'library' | 'about';
+export type NavSection = 'home' | 'threads' | 'sandbox' | 'workshop' | 'library' | 'about' | 'help';
 
 interface HeaderProps {
   activeSection: NavSection;
@@ -55,18 +55,37 @@ export const Header: React.FC<HeaderProps> = ({ activeSection, onNavigate, onOpe
           ))}
         </nav>
 
-        <button
-          type="button"
-          className="site-header__search"
-          onClick={onOpenSearch}
-          aria-label="Search (/)"
-        >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.3-4.3" />
-          </svg>
-          <kbd className="site-header__kbd">/</kbd>
-        </button>
+        <div className="site-header__actions">
+          <button
+            type="button"
+            className="site-header__search"
+            onClick={onOpenSearch}
+            aria-label="Search (/)"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.3-4.3" />
+            </svg>
+            <kbd className="site-header__kbd">/</kbd>
+          </button>
+
+          <a
+            href="/help/"
+            className={`site-header__help ${activeSection === 'help' ? 'is-active' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              onNavigate('/help/');
+            }}
+            aria-label="Help & site guide"
+            title="How this site works"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <path d="M12 17h.01" />
+            </svg>
+          </a>
+        </div>
       </div>
     </header>
   );
