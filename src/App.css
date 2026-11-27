@@ -13,10 +13,12 @@
 
 .home-front-door__title {
 	margin: 0;
+	text-align: center;
 }
 
 .home-front-door__tagline {
 	margin: var(--space-home-heading-tagline) auto 0;
+	text-align: center;
 }
 
 .home-front-door__about {

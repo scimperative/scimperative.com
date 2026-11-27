@@ -31,14 +31,25 @@ async function prerender() {
 
   try {
     const { render, getAllModules } = await vite.ssrLoadModule('/src/entry-server.tsx');
+    const { THREADS, ENTITIES, buildSearchIndex } = await vite.ssrLoadModule('/src/data/knowledgeGraph.ts');
     const modules = getAllModules();
+
+    // Write static search index
+    const searchIndex = buildSearchIndex();
+    fs.writeFileSync(path.resolve(distDir, 'search-index.json'), JSON.stringify(searchIndex, null, 2), 'utf-8');
 
     const routes: RouteConfig[] = [
       {
         url: '/',
         outputPath: path.resolve(distDir, 'index.html'),
         title: 'Silicon Carbide Imperative',
-        description: 'First-principles engineering, economics, and geopolitics where machines meet humanity.',
+        description: 'First-principles engineering, economics, and geopolitics where machines meet physical reality.',
+      },
+      {
+        url: '/threads/',
+        outputPath: path.resolve(distDir, 'threads', 'index.html'),
+        title: 'Threads · Silicon Carbide Imperative',
+        description: 'Core questions and investigation themes connecting Sandbox models, Workshop measurements, and Library analysis.',
       },
       {
         url: '/sandbox/',
@@ -50,13 +61,13 @@ async function prerender() {
         url: '/workshop/',
         outputPath: path.resolve(distDir, 'workshop', 'index.html'),
         title: 'Workshop · Silicon Carbide Imperative',
-        description: 'Hardware measurements compared against first-principles predictions.',
+        description: 'Test it. Hands-on measurements that put real hardware against what the model expects.',
       },
       {
         url: '/library/',
         outputPath: path.resolve(distDir, 'library', 'index.html'),
         title: 'Library · Silicon Carbide Imperative',
-        description: 'Rigorous technical dossiers, analytical essays, and physical boundary investigations.',
+        description: 'Explain it. Written analysis unpacking the physics, trade-offs, and practical takeaways behind a question.',
       },
       {
         url: '/about/',
@@ -65,6 +76,27 @@ async function prerender() {
         description: 'Learn about Silicon Carbide Imperative, an independent publication exploring high-friction technical interfaces from first principles.',
       },
     ];
+
+    // Add Thread hub routes
+    for (const thread of THREADS) {
+      routes.push({
+        url: `/threads/${thread.slug}/`,
+        outputPath: path.resolve(distDir, 'threads', thread.slug, 'index.html'),
+        title: `${thread.title} · Silicon Carbide Imperative`,
+        description: thread.description,
+      });
+    }
+
+    // Add Workshop and Library entity detail routes
+    for (const entity of ENTITIES) {
+      if (entity.status !== 'published' || entity.pillar === 'sandbox') continue;
+      routes.push({
+        url: `/${entity.pillar}/${entity.slug}/`,
+        outputPath: path.resolve(distDir, entity.pillar, entity.slug, 'index.html'),
+        title: `${entity.title} · Silicon Carbide Imperative`,
+        description: entity.summary,
+      });
+    }
 
     // Add module-specific routes
     for (const mod of modules) {

@@ -1,191 +1,272 @@
-﻿import { useState, useEffect } from 'react';
-import { getAllModules, getModuleById } from '../sandbox/core/registry';
+﻿import { useState, useEffect, useCallback } from 'react';
+import { getModuleById } from '../sandbox/core/registry';
 import { ModuleShell } from '../sandbox/core/ModuleShell';
+import { BUILD_INFO } from '../sandbox/core/buildInfo';
+import { Header, type NavSection } from './components/Header';
+import { Footer } from './components/Footer';
+import { SearchModal } from './components/SearchModal';
+import { Breadcrumbs, type BreadcrumbItem } from './components/Breadcrumbs';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
-import { WorkshopPage } from './pages/WorkshopPage';
-import { LibraryPage } from './pages/LibraryPage';
-import { BUILD_INFO } from '../sandbox/core/buildInfo';
-
-type View = 'home' | 'sandbox' | 'about' | 'workshop' | 'library';
-
-const VIEWS: View[] = ['sandbox', 'about', 'workshop', 'library'];
-
-const PAGE_TITLES: Record<View, string> = {
-  home: 'Silicon Carbide Imperative',
-  sandbox: 'Sandbox · Silicon Carbide Imperative',
-  about: 'About · Silicon Carbide Imperative',
-  workshop: 'Workshop · Silicon Carbide Imperative',
-  library: 'Library · Silicon Carbide Imperative',
-};
+import { ThreadsPage } from './pages/ThreadsPage';
+import { ThreadHubPage } from './pages/ThreadHubPage';
+import { PillarIndexPage } from './pages/PillarIndexPage';
+import { EntityDetailPage } from './pages/EntityDetailPage';
+import {
+  getEntityBySlug,
+  getThreadBySlug,
+} from './data/knowledgeGraph';
 
 export interface AppProps {
   initialUrl?: string;
 }
 
+function normalizePath(urlOrPath: string): string {
+  try {
+    const u = new URL(urlOrPath, 'https://scimperative.com');
+    const clean = u.pathname.replace(/\/+$/, '');
+    return clean === '' ? '/' : `${clean}/`;
+  } catch {
+    return '/';
+  }
+}
+
 export function App({ initialUrl }: AppProps = {}) {
-  const readRoute = () => {
-    let search = '';
-    let pathname = '';
-    if (initialUrl) {
-      try {
-        const u = new URL(initialUrl, 'https://scimperative.com');
-        search = u.search;
-        pathname = u.pathname;
-      } catch {
-        search = '';
-        pathname = '';
-      }
-    } else if (typeof window !== 'undefined') {
-      search = window.location.search;
-      pathname = window.location.pathname;
-    }
-
-    const params = new URLSearchParams(search);
-    let requested = params.get('view') as View | null;
-    let moduleId = params.get('module');
-
-    if (!requested && !moduleId && pathname) {
-      const clean = pathname.replace(/^\/+|\/+$/g, '');
-      const parts = clean.split('/').filter(Boolean);
-      if (parts[0] === 'sandbox') {
-        if (parts[1]) {
-          moduleId = parts[1];
-        } else {
-          requested = 'sandbox';
-        }
-      } else if (VIEWS.includes(parts[0] as View)) {
-        requested = parts[0] as View;
-      }
-    }
-
-    return {
-      moduleId,
-      view: requested && VIEWS.includes(requested) ? requested : ('home' as View),
-    };
+  const readPath = () => {
+    if (initialUrl) return normalizePath(initialUrl);
+    if (typeof window !== 'undefined') return normalizePath(window.location.pathname);
+    return '/';
   };
-  const [route, setRoute] = useState(readRoute);
 
-  const modules = getAllModules();
-  const currentModule = route.moduleId ? getModuleById(route.moduleId) : null;
+  const [path, setPath] = useState<string>(readPath);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    const handlePopState = () => setRoute(readRoute());
+    const handlePopState = () => setPath(readPath());
     window.addEventListener('popstate', handlePopState);
     return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   useEffect(() => {
-    if (typeof document !== 'undefined') {
-      document.title = currentModule
-        ? currentModule.manifest.title
-        : PAGE_TITLES[route.view];
-    }
-  }, [currentModule, route.view]);
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      const isEditable =
+        target?.tagName === 'INPUT' ||
+        target?.tagName === 'TEXTAREA' ||
+        target?.tagName === 'SELECT' ||
+        target?.isContentEditable;
+      if (isEditable) return;
 
-  const navigate = (nextRoute: { moduleId?: string; view?: View }) => {
+      if (e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey) {
+        e.preventDefault();
+        setSearchQuery('');
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  const navigate = useCallback((nextPath: string) => {
     if (typeof window === 'undefined') return;
-    const url = new URL(window.location.href);
-    url.search = '';
-    if (nextRoute.moduleId) {
-      url.pathname = `/sandbox/${nextRoute.moduleId}/`;
-    } else if (nextRoute.view && nextRoute.view !== 'home') {
-      url.pathname = `/${nextRoute.view}/`;
-    } else {
-      url.pathname = '/';
-    }
-    window.history.pushState({}, '', url.toString());
-    setRoute({ moduleId: nextRoute.moduleId ?? null, view: nextRoute.view ?? 'home' });
-  };
+    const normalized = normalizePath(nextPath);
+    window.history.pushState({}, '', normalized);
+    setPath(normalized);
+    window.scrollTo(0, 0);
+  }, []);
 
-  if (currentModule) {
-    return (
-      <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
-        <nav
-          style={{
-            padding: '0.6rem 1.5rem',
-            borderBottom: '1px solid var(--nav-border)',
-            background: 'var(--nav-bg)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            position: 'sticky',
-            top: 0,
-            zIndex: 50,
-          }}
-        >
-          <button
-            onClick={() => navigate({ view: 'sandbox' })}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              background: 'none',
-              border: 'none',
-              color: 'var(--link)',
-              cursor: 'pointer',
-              fontWeight: 600,
-              fontSize: '0.85rem',
-              fontFamily: 'var(--sans)',
-              padding: '0.3rem 0.5rem',
-              borderRadius: '6px',
-              marginLeft: '-0.5rem',
+  const handleSelectTag = useCallback((tag: string) => {
+    setSearchQuery(`#${tag}`);
+    setSearchOpen(true);
+  }, []);
+
+  useEffect(() => {
+    const handleOpenSearch = (e: Event) => {
+      const detail = (e as CustomEvent<string>).detail;
+      if (typeof detail === 'string') {
+        setSearchQuery(detail);
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener('sci-open-search', handleOpenSearch);
+    return () => window.removeEventListener('sci-open-search', handleOpenSearch);
+  }, []);
+
+  const parts = path.replace(/^\/+|\/+$/g, '').split('/').filter(Boolean);
+  const section = parts[0] || 'home';
+  const slug = parts[1];
+
+  const activeSection: NavSection =
+    section === 'threads' ||
+    section === 'sandbox' ||
+    section === 'workshop' ||
+    section === 'library' ||
+    section === 'about'
+      ? section
+      : 'home';
+
+  // Resolve route content, title & breadcrumbs
+  let pageTitle = 'Silicon Carbide Imperative';
+  let content: React.ReactNode = null;
+  let breadcrumbs: BreadcrumbItem[] = [{ label: 'Home', path: '/' }];
+
+  if (section === 'sandbox' && slug) {
+    const mod = getModuleById(slug);
+    if (mod) {
+      pageTitle = `${mod.manifest.title} · Silicon Carbide Imperative`;
+      breadcrumbs = [
+        { label: 'Home', path: '/' },
+        { label: 'Sandbox', path: '/sandbox/' },
+        { label: mod.manifest.title },
+      ];
+      return (
+        <div className="site-shell">
+          <Header
+            activeSection="sandbox"
+            onNavigate={navigate}
+            onOpenSearch={() => {
+              setSearchQuery('');
+              setSearchOpen(true);
             }}
-          >
-            ← Sandbox
-          </button>
-          <span
-            style={{
-              fontSize: '0.75rem',
-              color: 'var(--text-muted)',
-              fontFamily: 'var(--mono)',
-              letterSpacing: '0.02em',
-            }}
-          >
-            SC Imperative Sandbox v{BUILD_INFO.sandboxVersion}
-          </span>
-        </nav>
-        <div style={{ flex: 1 }}>
-          <ModuleShell module={currentModule} />
+          />
+          <Breadcrumbs items={breadcrumbs} onNavigate={navigate} />
+          <div style={{ flex: 1 }}>
+            <ModuleShell module={mod} />
+          </div>
+          <div className="sandbox-version-bar">
+            Silicon Carbide Imperative Sandbox v{BUILD_INFO.sandboxVersion}
+          </div>
+          <SearchModal
+            isOpen={searchOpen}
+            initialQuery={searchQuery}
+            onClose={() => setSearchOpen(false)}
+            onNavigate={navigate}
+          />
         </div>
-      </div>
-    );
+      );
+    }
   }
 
-  if (route.view === 'about') {
-    return (
-      <AboutPage
-        onGoHome={() => navigate({ view: 'home' })}
-        onShowLibrary={() => navigate({ view: 'library' })}
+  if (section === 'threads' && slug) {
+    const thread = getThreadBySlug(slug);
+    if (thread) {
+      pageTitle = `${thread.title} · Silicon Carbide Imperative`;
+      breadcrumbs = [
+        { label: 'Home', path: '/' },
+        { label: 'Threads', path: '/threads/' },
+        { label: thread.title },
+      ];
+      content = (
+        <ThreadHubPage
+          thread={thread}
+          onNavigate={navigate}
+          onSelectTag={handleSelectTag}
+        />
+      );
+    }
+  } else if (section === 'threads') {
+    pageTitle = 'Threads · Silicon Carbide Imperative';
+    breadcrumbs = [{ label: 'Home', path: '/' }, { label: 'Threads' }];
+    content = <ThreadsPage onNavigate={navigate} onSelectTag={handleSelectTag} />;
+  } else if (section === 'workshop' && slug) {
+    const entity = getEntityBySlug('workshop', slug);
+    if (entity) {
+      pageTitle = `${entity.title} · Silicon Carbide Imperative`;
+      breadcrumbs = [
+        { label: 'Home', path: '/' },
+        { label: 'Workshop', path: '/workshop/' },
+        { label: entity.title },
+      ];
+      content = (
+        <EntityDetailPage
+          entity={entity}
+          onNavigate={navigate}
+          onSelectTag={handleSelectTag}
+        />
+      );
+    }
+  } else if (section === 'library' && slug) {
+    const entity = getEntityBySlug('library', slug);
+    if (entity) {
+      pageTitle = `${entity.title} · Silicon Carbide Imperative`;
+      breadcrumbs = [
+        { label: 'Home', path: '/' },
+        { label: 'Library', path: '/library/' },
+        { label: entity.title },
+      ];
+      content = (
+        <EntityDetailPage
+          entity={entity}
+          onNavigate={navigate}
+          onSelectTag={handleSelectTag}
+        />
+      );
+    }
+  } else if (section === 'sandbox') {
+    pageTitle = 'Sandbox · Silicon Carbide Imperative';
+    breadcrumbs = [{ label: 'Home', path: '/' }, { label: 'Sandbox' }];
+    content = (
+      <PillarIndexPage
+        pillar="sandbox"
+        onNavigate={navigate}
+        onSelectTag={handleSelectTag}
       />
     );
-  }
-
-  if (route.view === 'workshop') {
-    return (
-      <WorkshopPage
-        onGoHome={() => navigate({ view: 'home' })}
-        onShowSandbox={() => navigate({ view: 'sandbox' })}
+  } else if (section === 'workshop') {
+    pageTitle = 'Workshop · Silicon Carbide Imperative';
+    breadcrumbs = [{ label: 'Home', path: '/' }, { label: 'Workshop' }];
+    content = (
+      <PillarIndexPage
+        pillar="workshop"
+        onNavigate={navigate}
+        onSelectTag={handleSelectTag}
       />
     );
+  } else if (section === 'library') {
+    pageTitle = 'Library · Silicon Carbide Imperative';
+    breadcrumbs = [{ label: 'Home', path: '/' }, { label: 'Library' }];
+    content = (
+      <PillarIndexPage
+        pillar="library"
+        onNavigate={navigate}
+        onSelectTag={handleSelectTag}
+      />
+    );
+  } else if (section === 'about') {
+    pageTitle = 'About · Silicon Carbide Imperative';
+    breadcrumbs = [{ label: 'Home', path: '/' }, { label: 'About' }];
+    content = <AboutPage onNavigate={navigate} />;
   }
 
-  if (route.view === 'library') {
-    return <LibraryPage onGoHome={() => navigate({ view: 'home' })} />;
+  if (!content) {
+    content = <HomePage onNavigate={navigate} onSelectTag={handleSelectTag} />;
+  }
+
+  if (typeof document !== 'undefined') {
+    document.title = pageTitle;
   }
 
   return (
-    <HomePage
-      modules={modules}
-      view={route.view}
-      onSelectModule={(id) => navigate({ moduleId: id })}
-      onShowSandbox={() => navigate({ view: 'sandbox' })}
-      onShowWorkshop={() => navigate({ view: 'workshop' })}
-      onShowLibrary={() => navigate({ view: 'library' })}
-      onShowAbout={() => navigate({ view: 'about' })}
-      onGoHome={() => navigate({ view: 'home' })}
-    />
+    <div className="site-shell">
+      <Header
+        activeSection={activeSection}
+        onNavigate={navigate}
+        onOpenSearch={() => {
+          setSearchQuery('');
+          setSearchOpen(true);
+        }}
+      />
+      <Breadcrumbs items={breadcrumbs} onNavigate={navigate} />
+      <main className="site-main">{content}</main>
+      <Footer />
+      <SearchModal
+        isOpen={searchOpen}
+        initialQuery={searchQuery}
+        onClose={() => setSearchOpen(false)}
+        onNavigate={navigate}
+      />
+    </div>
   );
 }
 
