@@ -89,10 +89,8 @@ export function App({ initialUrl }: AppProps = {}) {
     url.search = '';
     if (nextRoute.moduleId) {
       url.pathname = `/sandbox/${nextRoute.moduleId}/`;
-      url.searchParams.set('module', nextRoute.moduleId);
     } else if (nextRoute.view && nextRoute.view !== 'home') {
       url.pathname = `/${nextRoute.view}/`;
-      url.searchParams.set('view', nextRoute.view);
     } else {
       url.pathname = '/';
     }

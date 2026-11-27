@@ -69,7 +69,7 @@ export function WorkshopPage({ onGoHome, onShowSandbox }: WorkshopPageProps) {
         <p style={{ color: 'var(--text)', lineHeight: 1.6 }}>
           Our hardware testbed. Each run is one physical measurement of one question, set against the{' '}
           <a
-            href="?view=sandbox"
+            href="/sandbox/"
             onClick={(event) => {
               event.preventDefault();
               onShowSandbox();
