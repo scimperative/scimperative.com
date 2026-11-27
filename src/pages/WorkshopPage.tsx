@@ -18,7 +18,7 @@ interface WorkshopRun {
 const RUNS: WorkshopRun[] = [
   {
     id: "01-hailo-expectation-calibration",
-    title: "Workshop 01: Is the Raspberry Pi AI HAT+ (Hailo-8L) good for AI?",
+    title: "WKS-EXP-001: Is the Raspberry Pi AI HAT+ (Hailo-8L) good for AI?",
     date: "2026-11-15",
     question:
       "One Raspberry Pi 5 with the AI HAT+ (Hailo-8L, 13 TOPS): how fast is it on CNN vision, how does it handle a speech transformer (Whisper-tiny), what does it do for LLMs, and how far is real throughput from rated TOPS? Verdict: strong for CNN vision (~100 FPS), Whisper-tiny runs on the HAT (~0.19 RTF), and LLMs are unsupported on the 8L chip (running on CPU at 14.3 tok/s). Predictions were set after pilot runs on the same rig, so read hit rates as pilot-informed, not blind. Not tested: energy and PCIe sensitivity.",
