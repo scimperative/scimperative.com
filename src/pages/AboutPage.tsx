@@ -70,11 +70,11 @@ export function AboutPage({ onNavigate }: AboutPageProps) {
         </p>
         <p>
           My perspective is shaped by a career across the aeronautical, space, and defence industries as an AI engineer, published researcher in explainable AI, and builder of autonomous systems across spacecraft, aircraft, missile defence, and radar platforms in Australia and Europe (see my experience on{' '}
-          <a href="https://patrick-finnerty.com" target="_blank" rel="noopener noreferrer">
+          <a href="https://patrickxcapaldo.github.io/" target="_blank" rel="noopener noreferrer">
             my personal website ↗
           </a>{' '}
           and{' '}
-          <a href="https://www.linkedin.com/in/patrickfinnerty/" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.linkedin.com/in/patrickxcapaldo/" target="_blank" rel="noopener noreferrer">
             LinkedIn profile ↗
           </a>
           ).
